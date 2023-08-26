@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+    mai:
+        container_name: mai
+        image: ghcr.io/materiiapps/mai:latest
+        restart: on-failure
+        env_file: .env
+        labels:
+            - "com.centurylinklabs.watchtower.scope=mai"
+    mai-updater:
+        container_name: mai-updater
+        image: containrrr/watchtower:1.5.3
+        restart: on-failure
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        environment:
+            WATCHTOWER_POLL_INTERVAL: 21600 # 6h
+            WATCHTOWER_SCOPE: mai
+        labels:
+            - "com.centurylinklabs.watchtower.scope=mai"
